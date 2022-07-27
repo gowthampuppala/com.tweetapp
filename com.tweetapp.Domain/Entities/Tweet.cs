@@ -18,5 +18,9 @@ namespace com.tweetapp.Domain.Entities
         public List<string> Likes { get; set; } 
 
         public List<string> Comments { get; set; }
+
+        public DateTime PostedOn { get; set; } = DateTime.Now;
+
+        public DateTime UpdatedOn { get; set; }
     }
 }

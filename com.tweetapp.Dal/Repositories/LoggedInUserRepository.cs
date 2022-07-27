@@ -23,7 +23,7 @@ namespace com.tweetapp.Dal.Repositories
         public async Task<string> AddTweet(Tweet tweet)
         {
             tweet.Likes = new List<string>() { };
-            tweet.Comments = new List<string>() { "" };
+            tweet.Comments = new List<string>() {  };
             try
             {
                 await _dbCollection.InsertOneAsync(tweet);
@@ -31,6 +31,20 @@ namespace com.tweetapp.Dal.Repositories
             }
             catch
             {
+                throw;
+            }
+        }
+
+        public async Task<string> DeleteTweet(string username, string id)
+        {
+            try
+            {
+                var tweet = await _dbCollection.DeleteOneAsync<Tweet>(x => x.Id == id);
+                return "Success";
+            }
+            catch (Exception)
+            {
+
                 throw;
             }
         }
@@ -50,6 +64,39 @@ namespace com.tweetapp.Dal.Repositories
                     var update = Builders<Tweet>.Update.AddToSet<string>("Likes", userID);
                     await _dbCollection.FindOneAndUpdateAsync<Tweet>(filter, update);
                 }
+                return "Success";
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<string> ReplyTweet(string userID, string tweetId, string comment)
+        {
+            try
+            {
+                var tweet = await _dbCollection.Find<Tweet>(x => x.Id == tweetId).FirstOrDefaultAsync();
+                var filter = Builders<Tweet>.Filter.Eq(x => x.Id, tweetId);
+                var update = Builders<Tweet>.Update.AddToSet<string>("Comments", comment);
+                await _dbCollection.FindOneAndUpdateAsync<Tweet>(filter, update);
+                return "Success";
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<string> UpdateTweet(string username, string id, string comment)
+        {
+            try
+            {
+                var tweet = await _dbCollection.Find<Tweet>(x => x.Id == id).FirstOrDefaultAsync();
+                var filter = Builders<Tweet>.Filter.Eq(x => x.Id, id);
+                var update = Builders<Tweet>.Update.Set<string>("Comments", comment);
+
+                await _dbCollection.FindOneAndUpdateAsync<Tweet>(filter, update);
                 return "Success";
             }
             catch

@@ -57,16 +57,16 @@ namespace com.tweetapp.Api.Controllers
 
         [HttpPut]
         [Route("{username}/update/{id}")]
-        public IActionResult UpdateTweet()
+        public async Task<IActionResult> UpdateTweet(string username, string id, [FromForm]string comment)
         {
-            return Ok();
+            return new JsonResult(await loggedInUserService.UpdateTweet(username, id, comment));
         }
 
         [HttpDelete]
         [Route("{username}/delete/{id}")]
-        public IActionResult DeleteTweet()
+        public async Task<IActionResult> DeleteTweet(string username, string id)
         {
-            return Ok();
+            return new JsonResult(await loggedInUserService.DeleteTweet(username, id));
         }
 
         [HttpPut]
@@ -78,9 +78,9 @@ namespace com.tweetapp.Api.Controllers
 
         [HttpPost]
         [Route("{username}/reply/{id}")]
-        public IActionResult ReplyToTweet()
+        public async Task<IActionResult> ReplyToTweet(string username, string id, [FromForm]string comment)
         {
-            return Ok();
+            return new JsonResult(await loggedInUserService.ReplyTweet(username, id, comment));
         }
     }
 }

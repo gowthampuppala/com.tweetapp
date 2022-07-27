@@ -20,6 +20,18 @@ namespace com.tweeetapp.Service.Services
             this.mapper = mapper ?? throw new System.ArgumentNullException(nameof(mapper));
         }
 
+        public async Task<string> DeleteTweet(string username, string id)
+        {
+            try
+            {
+                return await loggedInUserRepository.DeleteTweet(username, id);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public async Task<string> LikeTweet(string userID, string tweetId)
         {
             try
@@ -43,6 +55,30 @@ namespace com.tweeetapp.Service.Services
                 throw;
             }
             
+        }
+
+        public async Task<string> ReplyTweet(string userID, string tweetId, string comment)
+        {
+            try
+            {
+                return await loggedInUserRepository.ReplyTweet(userID, tweetId, comment);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<string> UpdateTweet(string username, string id, string comment)
+        {
+            try
+            {
+                return await loggedInUserRepository.UpdateTweet( username, id, comment);
+            }
+            catch
+            {
+                throw;
+            }
         }
     }
 }
