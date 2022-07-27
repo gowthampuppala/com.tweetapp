@@ -21,16 +21,17 @@ namespace com.tweetapp.Api.Controllers
 
         [HttpGet]
         [Route("all")]
-        public IActionResult AllTweets()
+        public async Task<IActionResult> AllTweets()
         {
-            return Ok();
+            return new JsonResult(await loggedInUserService.GetAllTweets());
         }
 
         [HttpGet]
         [Route("users/all")]
-        public IActionResult GetAllUsers()
+        public async Task<IActionResult> GetAllUsers()
         {
-            return Ok();
+            return new JsonResult(await loggedInUserService.GetAllUsers());
+
         }
 
         [HttpGet]
@@ -42,9 +43,9 @@ namespace com.tweetapp.Api.Controllers
 
         [HttpGet]
         [Route("{username}")]
-        public IActionResult GetAllTweetsOfUser()
+        public async Task<IActionResult> GetAllTweetsOfUser(string username)
         {
-            return Ok();
+            return new JsonResult(await loggedInUserService.GetAllTweetsOfUser(username));
         }
 
         [HttpPost]
@@ -52,7 +53,6 @@ namespace com.tweetapp.Api.Controllers
         public async Task<IActionResult> PostTweet([FromForm] PostTweet tweet)
         {
             return new JsonResult(await loggedInUserService.PostTweet(tweet));
-//            return Ok();
         }
 
         [HttpPut]

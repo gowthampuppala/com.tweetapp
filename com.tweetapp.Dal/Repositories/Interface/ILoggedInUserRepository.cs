@@ -17,5 +17,11 @@ namespace com.tweetapp.Dal.Repositories.Interface
         Task<string> DeleteTweet(string username, string id);
 
         Task<string> UpdateTweet(string username, string id, string comment);
+
+        Task<List<Tweet>> GetAllTweetsOfUser(string username);
+
+        Task<List<Tweet>> GetAllTweets();
+
+        Task<List<string>> GetAllUsers();
     }
 }

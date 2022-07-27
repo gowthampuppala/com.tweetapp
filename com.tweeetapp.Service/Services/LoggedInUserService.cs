@@ -32,6 +32,42 @@ namespace com.tweeetapp.Service.Services
             }
         }
 
+        public async Task<List<Tweet>> GetAllTweets()
+        {
+            try
+            {
+                return await loggedInUserRepository.GetAllTweets();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<Tweet>> GetAllTweetsOfUser(string username)
+        {
+            try
+            {
+                return await loggedInUserRepository.GetAllTweetsOfUser( username);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<List<string>> GetAllUsers()
+        {
+            try
+            {
+                return await loggedInUserRepository.GetAllUsers();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public async Task<string> LikeTweet(string userID, string tweetId)
         {
             try
