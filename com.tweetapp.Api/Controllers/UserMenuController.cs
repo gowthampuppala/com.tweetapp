@@ -31,14 +31,16 @@ namespace com.tweetapp.Api.Controllers
         public async Task<IActionResult> GetAllUsers()
         {
             return new JsonResult(await loggedInUserService.GetAllUsers());
-
         }
 
         [HttpGet]
         [Route("user/search/{username}")]
-        public IActionResult SearchByUserName()
+        public async Task<IActionResult> SearchByUserName(string username)
         {
-            return Ok();
+            var obj = new Dictionary<string, object>();
+            obj["tweets"] = await loggedInUserService.GetAllTweetsOfUser(username);
+            obj["UserDetails"] = await loggedInUserService.SearchByUserName(username);
+            return new JsonResult(obj);
         }
 
         [HttpGet]

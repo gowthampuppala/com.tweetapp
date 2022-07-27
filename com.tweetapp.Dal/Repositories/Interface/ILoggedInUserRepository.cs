@@ -23,5 +23,7 @@ namespace com.tweetapp.Dal.Repositories.Interface
         Task<List<Tweet>> GetAllTweets();
 
         Task<List<string>> GetAllUsers();
+
+        Task<object> SearchByUserName(string username);
     }
 }

@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using com.tweetapp.Domain.Output;
+using System.Web.Http.Results;
 
 namespace com.tweetapp.Dal.Repositories
 {
@@ -134,6 +136,28 @@ namespace com.tweetapp.Dal.Repositories
                 return "Success";
             }
             catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<object> SearchByUserName(string username)
+        {
+            try
+            {
+                await Task.Delay(1);
+                var users = _UserCollection.AsQueryable<UserDetails>(null);
+                var user1 = from user in users where (user.Email == username )select user;
+                var UserDetails = user1.ToList();
+                var obj = new Dictionary<string, string>();
+                obj["Firstname"] = UserDetails[0].FirstName;
+                obj["Photo"] = UserDetails[0].Photo.ToString();
+                obj["Email"] = UserDetails[0].Email;
+                obj["Dob"] = UserDetails[0].DOB.ToString();
+
+                return (obj);
+            }
+            catch (Exception)
             {
                 throw;
             }

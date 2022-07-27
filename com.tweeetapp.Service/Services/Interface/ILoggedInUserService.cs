@@ -24,5 +24,7 @@ namespace com.tweeetapp.Service.Services.Interface
         Task<List<Tweet>>  GetAllTweets();
 
         Task<List<string>> GetAllUsers();
+
+        Task<object> SearchByUserName(string username);
     }
 }

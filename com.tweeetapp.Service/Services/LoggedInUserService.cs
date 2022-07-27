@@ -105,6 +105,18 @@ namespace com.tweeetapp.Service.Services
             }
         }
 
+        public async Task<object> SearchByUserName(string username)
+        {
+            try
+            {
+                return await loggedInUserRepository.SearchByUserName(username);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public async Task<string> UpdateTweet(string username, string id, string comment)
         {
             try
