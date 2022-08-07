@@ -1,5 +1,6 @@
 ﻿using com.tweeetapp.Service.Services.Interface;
 using com.tweetapp.Domain.Input;
+using com.tweetapp.Domain.Output;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -31,10 +32,16 @@ namespace com.tweetapp.Api.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromForm] LoginCreds userCredentials)
+        public async Task<IActionResult> Login([FromBody] LoginCreds userCredentials)
         {
+          
             var res = await userLoginService.UserLogin(userCredentials);
-            return new JsonResult(res);
+            if(res != null)
+            return Ok(res);
+            else
+            {
+                return StatusCode(404, new { errorMessage = "Invalid Credentials!" });
+            }
         }
 
         [HttpGet]

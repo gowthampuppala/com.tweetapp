@@ -1,5 +1,6 @@
 ﻿using com.tweetapp.Domain.Entities;
 using com.tweetapp.Domain.Input;
+using com.tweetapp.Domain.Output;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,13 +16,15 @@ namespace com.tweeetapp.Service.Services.Interface
 
         Task<string> ReplyTweet(string userID, string tweetId, string comment);
 
-        Task<string> DeleteTweet(string username, string id);
+        Task<string> DeleteTweet( string id);
 
-        Task<string> UpdateTweet(string username, string id, string comment);
+        Task<string> UpdateTweet(string id, string comment);
 
-        Task<List<Tweet>> GetAllTweetsOfUser(string username);
+        Task<List<TweetDto>> GetAllTweetsOfUser(string username);
 
-        Task<List<Tweet>>  GetAllTweets();
+        Task<TweetDto> GetTweetById(string id);
+
+        Task<List<TweetDto>>  GetAllTweets();
 
         Task<List<string>> GetAllUsers();
 

@@ -40,7 +40,7 @@ namespace com.tweetapp.Dal.Repositories
             }
         }
 
-        public async Task<string> DeleteTweet(string username, string id)
+        public async Task<string> DeleteTweet(string id)
         {
             try
             {
@@ -54,14 +54,32 @@ namespace com.tweetapp.Dal.Repositories
             }
         }
 
-        public async Task<List<Tweet>> GetAllTweets()
+        public async Task<List<TweetDto>> GetAllTweets()
         {
             try
             {
                 await Task.Delay(1);
                 var tweet =  _dbCollection.AsQueryable<Tweet>(null);
                 var res = tweet.ToList();
-                return res;
+                var tweets = new List<TweetDto>();
+                foreach (var item in res)
+                {
+                    var Tweet = new TweetDto();
+                    Tweet.Id = item.Id;
+                    Tweet.UserId = item.UserId;
+                    Tweet.PostedOn = item.PostedOn;
+                    Tweet.PostMessage = item.PostMessage;
+                    Tweet.Likes = item.Likes;
+                    Tweet.Comments = item.Comments;
+                    var users = _UserCollection.AsQueryable<UserDetails>(null);
+                    var user1 = from user in users where (user.Email == item.UserId) select user;
+                    var UserDetails = user1.ToList();
+                    Tweet.FirstName = UserDetails[0].FirstName;
+                    Tweet.LastName = UserDetails[0].LastName;
+                    tweets.Add(Tweet);
+                }
+                
+                return tweets;
             }
             catch (Exception)
             {
@@ -70,13 +88,65 @@ namespace com.tweetapp.Dal.Repositories
             }
         }
 
-        public async Task<List<Tweet>> GetAllTweetsOfUser(string username)
+        public async Task<TweetDto> GetTweetById(string id)
+        {
+            try
+            {
+                await Task.Delay(1);
+                var tweet = _dbCollection.AsQueryable<Tweet>(null);
+                var res = from Tweeet in tweet where (Tweeet.Id == id) select Tweeet;
+                var result = res.ToList();
+                var Tweet = new TweetDto();
+                foreach (var item in result)
+                {
+                    
+                    Tweet.Id = item.Id;
+                    Tweet.UserId = item.UserId;
+                    Tweet.PostedOn = item.PostedOn;
+                    Tweet.PostMessage = item.PostMessage;
+                    Tweet.Likes = item.Likes;
+                    Tweet.Comments = item.Comments;
+                    var users = _UserCollection.AsQueryable<UserDetails>(null);
+                    var user1 = from user in users where (user.Email == result[0].UserId) select user;
+                    var UserDetails = user1.ToList();
+                    Tweet.FirstName = UserDetails[0].FirstName;
+                    Tweet.LastName = UserDetails[0].LastName;
+                    
+                }
+
+                return Tweet;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<List<TweetDto>> GetAllTweetsOfUser(string username)
         {
             try
             {
                 var tweet = await _dbCollection.FindAsync<Tweet>(x => x.UserId == username);
                 var res = tweet.ToList();
-                return res;
+                var tweets = new List<TweetDto>();
+                foreach (var item in res)
+                {
+                    var Tweet = new TweetDto();
+                    Tweet.Id = item.Id;
+                    Tweet.UserId = item.UserId;
+                    Tweet.PostedOn = item.PostedOn;
+                    Tweet.PostMessage = item.PostMessage;
+                    Tweet.Likes = item.Likes;
+                    Tweet.Comments = item.Comments;
+                    var users = _UserCollection.AsQueryable<UserDetails>(null);
+                    var user1 = from user in users where (user.Email == item.UserId) select user;
+                    var UserDetails = user1.ToList();
+                    Tweet.FirstName = UserDetails[0].FirstName;
+                    Tweet.LastName = UserDetails[0].LastName;
+                    tweets.Add(Tweet);
+                }
+                return tweets;
             }
             catch (Exception)
             {
@@ -163,7 +233,7 @@ namespace com.tweetapp.Dal.Repositories
             }
         }
 
-        public async Task<string> UpdateTweet(string username, string id, string comment)
+        public async Task<string> UpdateTweet(string id, string comment)
         {
             try
             {

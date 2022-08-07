@@ -2,6 +2,7 @@
 using com.tweetapp.Dal.Repositories.Interface;
 using com.tweetapp.Domain.Entities;
 using com.tweetapp.Domain.Input;
+using com.tweetapp.Domain.Output;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -20,21 +21,26 @@ namespace com.tweetapp.Dal.Repositories
             _context = context;
             _dbCollection = _context.GetCollection<UserDetails>("Users");
         }
-        public async Task<string> UserLogin(LoginCreds userDetails)
+        public async Task<User> UserLogin(LoginCreds userDetails)
         {
             var existingUser = await _dbCollection.Find<UserDetails>(c => c.Email == userDetails.UserMailId).FirstOrDefaultAsync();
-            if (existingUser is null)
+
+            var user = new User();
+            if(existingUser == null)
             {
-                return "No User Found";
+                return null;
             }
             if(existingUser.PassWord == userDetails.Password)
             {
-                return "Success";
+                user.Id = existingUser.Id;
+                user.FirstName = existingUser.FirstName;
+                user.LastName = existingUser.LastName;
+                user.Gender = existingUser.Gender;
+                user.Email = existingUser.Email;
+                user.DOB = existingUser.DOB;
+                return user;
             }
-            else
-            {
-                return "Incorrect Password";
-            }
+            return null;
         }
     }
 }

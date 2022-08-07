@@ -1,4 +1,5 @@
 ﻿using com.tweetapp.Domain.Input;
+using com.tweetapp.Domain.Output;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +9,6 @@ namespace com.tweeetapp.Service.Services.Interface
 {
     public interface IUserLoginService
     {
-        Task<string> UserLogin(LoginCreds userCredentials);
+        Task<User> UserLogin(LoginCreds userCredentials);
     }
 }

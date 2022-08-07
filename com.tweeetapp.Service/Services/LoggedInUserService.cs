@@ -3,6 +3,7 @@ using com.tweeetapp.Service.Services.Interface;
 using com.tweetapp.Dal.Repositories.Interface;
 using com.tweetapp.Domain.Entities;
 using com.tweetapp.Domain.Input;
+using com.tweetapp.Domain.Output;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,11 +21,11 @@ namespace com.tweeetapp.Service.Services
             this.mapper = mapper ?? throw new System.ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<string> DeleteTweet(string username, string id)
+        public async Task<string> DeleteTweet( string id)
         {
             try
             {
-                return await loggedInUserRepository.DeleteTweet(username, id);
+                return await loggedInUserRepository.DeleteTweet(id);
             }
             catch
             {
@@ -32,7 +33,7 @@ namespace com.tweeetapp.Service.Services
             }
         }
 
-        public async Task<List<Tweet>> GetAllTweets()
+        public async Task<List<TweetDto>> GetAllTweets()
         {
             try
             {
@@ -44,7 +45,7 @@ namespace com.tweeetapp.Service.Services
             }
         }
 
-        public async Task<List<Tweet>> GetAllTweetsOfUser(string username)
+        public async Task<List<TweetDto>> GetAllTweetsOfUser(string username)
         {
             try
             {
@@ -61,6 +62,18 @@ namespace com.tweeetapp.Service.Services
             try
             {
                 return await loggedInUserRepository.GetAllUsers();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<TweetDto> GetTweetById(string id)
+        {
+            try
+            {
+                return await loggedInUserRepository.GetTweetById(id);
             }
             catch
             {
@@ -117,11 +130,11 @@ namespace com.tweeetapp.Service.Services
             }
         }
 
-        public async Task<string> UpdateTweet(string username, string id, string comment)
+        public async Task<string> UpdateTweet(string id, string comment)
         {
             try
             {
-                return await loggedInUserRepository.UpdateTweet( username, id, comment);
+                return await loggedInUserRepository.UpdateTweet( id, comment);
             }
             catch
             {

@@ -2,6 +2,7 @@
 using com.tweeetapp.Service.Services.Interface;
 using com.tweetapp.Dal.Repositories.Interface;
 using com.tweetapp.Domain.Input;
+using com.tweetapp.Domain.Output;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,7 +19,7 @@ namespace com.tweeetapp.Service.Services
             this.userLoginRepository = userLoginRepository ?? throw new System.ArgumentNullException(nameof(userLoginRepository));
             this.mapper = mapper ?? throw new System.ArgumentNullException(nameof(mapper));
         }
-        public async Task<string> UserLogin(LoginCreds userCredentials)
+        public async Task<User> UserLogin(LoginCreds userCredentials)
         {
             userCredentials.Password = EncryptPassword(userCredentials.Password);
             var res = await userLoginRepository.UserLogin(userCredentials);

@@ -51,24 +51,31 @@ namespace com.tweetapp.Api.Controllers
         }
 
         [HttpPost]
-        [Route("{username}/add")]
-        public async Task<IActionResult> PostTweet([FromForm] PostTweet tweet)
+        [Route("add")]
+        public async Task<IActionResult> PostTweet([FromBody] PostTweet tweet)
         {
             return new JsonResult(await loggedInUserService.PostTweet(tweet));
         }
 
-        [HttpPut]
-        [Route("{username}/update/{id}")]
-        public async Task<IActionResult> UpdateTweet(string username, string id, [FromForm]string comment)
+        [HttpGet]
+        [Route("GetById")]
+        public async Task<IActionResult> GetTweetById(string id)
         {
-            return new JsonResult(await loggedInUserService.UpdateTweet(username, id, comment));
+            return new JsonResult(await loggedInUserService.GetTweetById(id));
+        }
+
+        [HttpPut]
+        [Route("update")]
+        public async Task<IActionResult> UpdateTweet([FromBody] UpdateTweet tweet)
+        {
+            return new JsonResult(await loggedInUserService.UpdateTweet( tweet.Id, tweet.Tweet));
         }
 
         [HttpDelete]
-        [Route("{username}/delete/{id}")]
-        public async Task<IActionResult> DeleteTweet(string username, string id)
+        [Route("delete/{id}")]
+        public async Task<IActionResult> DeleteTweet(string id)
         {
-            return new JsonResult(await loggedInUserService.DeleteTweet(username, id));
+            return new JsonResult(await loggedInUserService.DeleteTweet(id));
         }
 
         [HttpPut]
