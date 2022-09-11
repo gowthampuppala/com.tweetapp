@@ -36,8 +36,8 @@ namespace com.tweetapp.Dal.Repositories
                 user.FirstName = existingUser.FirstName;
                 user.LastName = existingUser.LastName;
                 user.Gender = existingUser.Gender;
-                user.Email = existingUser.Email;
-                user.DOB = existingUser.DOB;
+                user.EmailId = existingUser.Email;
+                user.DateOfBirth = existingUser.DOB;
                 return user;
             }
             return null;

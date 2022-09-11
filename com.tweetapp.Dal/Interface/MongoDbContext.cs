@@ -1,4 +1,5 @@
 ﻿using com.tweetapp.Dal.Infrastructure.Interfaces;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using System;
@@ -8,14 +9,18 @@ using System.Text;
 
 namespace com.tweetapp.Dal.Interface
 {
+    
     public class MongoDbContext : IMongoDbContext
     {
+        private readonly IConfiguration _config;
+
         private IMongoDatabase _db { get; set; }
         private MongoClient _mongoClient { get; set; }
         public IClientSessionHandle Session { get; set; }
-        public MongoDbContext(IOptions<Mongosettings> configuration)
+        public MongoDbContext(IConfiguration IConfig, IOptions<Mongosettings> configuration)
         {
-            _mongoClient = new MongoClient("mongodb+srv://gowtham:12345@cluster0.kt3wy.mongodb.net/?retryWrites=true&w=majority");
+            this._config = IConfig;
+            _mongoClient = new MongoClient(_config.GetConnectionString("Connection"));
             _db = _mongoClient.GetDatabase("TweetAppDB");
         }
 

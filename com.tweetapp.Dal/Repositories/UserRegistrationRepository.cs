@@ -1,6 +1,7 @@
 ﻿using com.tweetapp.Dal.Infrastructure.Interfaces;
 using com.tweetapp.Dal.Repositories.Interface;
 using com.tweetapp.Domain.Entities;
+using com.tweetapp.Domain.Input;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using System;
@@ -29,6 +30,26 @@ namespace com.tweetapp.Dal.Repositories
                 return "Success";
             }
             return "User already Exists!";
+        }
+
+        public async Task<bool> IsUserAlreadyExist(string userId)
+        {
+            return await _dbCollection.Find(s => s.Email == userId).FirstOrDefaultAsync() != null;
+        }
+
+        public async Task<bool> updatePassword(string userId, string newPassword)
+        { 
+            var result = await _dbCollection.UpdateOneAsync(t => t.Email == userId, Builders<UserDetails>.Update.Set(m => m.PassWord, newPassword));
+            return result.IsAcknowledged && result.ModifiedCount > 0;
+        }
+
+        public async Task<bool> CheckSecurityCredential(ForgotPasswordDto credential)
+        {
+            var result = await _dbCollection.Find(m => m.Email == credential.EmailId &&
+            m.SecurityQuestion == credential.SecurityQuestion &&
+            m.Answer.ToLower() == credential.SecurityAnswer.ToLower()).FirstOrDefaultAsync();
+
+            return result != null;
         }
     }
 }

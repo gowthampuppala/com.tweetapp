@@ -14,10 +14,12 @@ namespace com.tweetapp.Domain.Output
 
         public string Gender { get; set; }
 
-        public DateTime DOB { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
-        public string Email { get; set; }
+        public string EmailId { get; set; }
 
         public byte[] Photo { get; set; }
+
+        public string Token { get; set; }
     }
 }

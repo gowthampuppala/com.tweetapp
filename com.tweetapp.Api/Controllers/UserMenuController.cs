@@ -5,7 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace com.tweetapp.Api.Controllers
 {
@@ -19,6 +23,7 @@ namespace com.tweetapp.Api.Controllers
             this.loggedInUserService = loggedInUserService;
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet]
         [Route("all")]
         public async Task<IActionResult> AllTweets()
@@ -87,9 +92,16 @@ namespace com.tweetapp.Api.Controllers
 
         [HttpPost]
         [Route("{username}/reply/{id}")]
-        public async Task<IActionResult> ReplyToTweet(string username, string id, [FromForm]string comment)
+        public async Task<IActionResult> ReplyToTweet(string username, string id, [FromBody]comment comment)
         {
-            return new JsonResult(await loggedInUserService.ReplyTweet(username, id, comment));
+            return new JsonResult(await loggedInUserService.ReplyTweet(username, id, comment.commen));
+        }
+
+        [HttpDelete]
+        [Route("deleteUser/{email}")]
+        public async Task<IActionResult> DeleteUser(string email)
+        {
+            return new JsonResult(await loggedInUserService.DeleteUser(email));
         }
     }
 }

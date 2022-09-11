@@ -20,6 +20,16 @@ namespace com.tweeetapp.Service.Services
             this.userRegistrationRepository = userRegistrationRepository ?? throw new System.ArgumentNullException(nameof(userRegistrationRepository));
             this.mapper = mapper ?? throw new System.ArgumentNullException(nameof(mapper));
         }
+
+        public async Task<bool?> IsEmailIdAlreadyExist(string emailId)
+        {
+            var result = await userRegistrationRepository.IsUserAlreadyExist(emailId);
+
+            return result;
+        }
+
+        
+
         public string UserRegistration(UserRegistration user)
         {
             var newUser = mapper.Map<UserDetails>(user);
@@ -38,6 +48,19 @@ namespace com.tweeetapp.Service.Services
                 }
             }
             return userRegistrationRepository.AddUserToDb(newUser); 
+        }
+
+        public async Task<bool> ResetPassword(string userId, string newPassword)
+        {
+            var password = EncryptPassword(newPassword);
+            var result = await userRegistrationRepository.updatePassword(userId, password);
+            return result;
+        }
+
+        public async Task<bool> ValidateSecurityCredential(ForgotPasswordDto credentilas)
+        {
+            var result = await userRegistrationRepository.CheckSecurityCredential(credentilas);
+            return result;
         }
         private string EncryptPassword(string password)
         {

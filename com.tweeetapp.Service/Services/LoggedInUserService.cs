@@ -33,6 +33,18 @@ namespace com.tweeetapp.Service.Services
             }
         }
 
+        public async Task<string> DeleteUser(string email)
+        {
+            try
+            {
+                return await loggedInUserRepository.DeleteUser(email);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
         public async Task<List<TweetDto>> GetAllTweets()
         {
             try
@@ -57,7 +69,7 @@ namespace com.tweeetapp.Service.Services
             }
         }
 
-        public async Task<List<string>> GetAllUsers()
+        public async Task<List<User>> GetAllUsers()
         {
             try
             {

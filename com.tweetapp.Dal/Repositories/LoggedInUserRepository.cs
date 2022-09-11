@@ -155,16 +155,26 @@ namespace com.tweetapp.Dal.Repositories
             }
         }
 
-        public async Task<List<string>> GetAllUsers()
+        public async Task<List<User>> GetAllUsers()
         {
             try
             {
                 await Task.Delay(1);
-                var users = _UserCollection.AsQueryable<UserDetails>(null);
-                var usernames = from user in users select user.FirstName;
-                var userNames = usernames.ToList();
+                var res = new List<User>();
+                var users = _UserCollection.AsQueryable<UserDetails>(null).ToList();
+                foreach (var item in users)
+                {
+                    var user = new User();
+                    user.Id = item.Id;
+                    user.FirstName = item.FirstName;
+                    user.LastName = item.LastName;
+                    user.Gender = item.Gender;
+                    user.EmailId = item.Email;
+                    user.DateOfBirth = item.DOB;
+                    res.Add(user);
+                }
                 //var res = users.ToList();
-                return userNames;
+                return res;
             }
             catch (Exception)
             {
@@ -247,6 +257,20 @@ namespace com.tweetapp.Dal.Repositories
                 return "Success";
             }
             catch
+            {
+                throw;
+            }
+        }
+
+        public async Task<string> DeleteUser(string email)
+        {
+            try
+            {
+                var tweetsdel = await _dbCollection.DeleteManyAsync<Tweet>(x => x.UserId == email);
+                var tweet = await _UserCollection.DeleteOneAsync<UserDetails>(x => x.Email == email);
+                return "Success";
+            }
+            catch (Exception)
             {
                 throw;
             }

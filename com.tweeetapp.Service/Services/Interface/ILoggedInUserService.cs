@@ -18,6 +18,8 @@ namespace com.tweeetapp.Service.Services.Interface
 
         Task<string> DeleteTweet( string id);
 
+        Task<string> DeleteUser(string email);
+
         Task<string> UpdateTweet(string id, string comment);
 
         Task<List<TweetDto>> GetAllTweetsOfUser(string username);
@@ -26,7 +28,7 @@ namespace com.tweeetapp.Service.Services.Interface
 
         Task<List<TweetDto>>  GetAllTweets();
 
-        Task<List<string>> GetAllUsers();
+        Task<List<User>> GetAllUsers();
 
         Task<object> SearchByUserName(string username);
     }
